@@ -17,6 +17,11 @@ int direction = 0; // 0 - right / 1 - left / 2 - top / 3 - down
 
 GLint map[SIZE_MAP][SIZE_MAP];
 GLint pacman[SIZE_PAC_MODE];
+int grafo[SIZE_MAP][SIZE_MAP];
+
+int position = 0;
+int x_ax = 0;
+int y_ax = 0;
 
 const char* pacman_paths[SIZE_PAC_MODE] = {
         "../images/pacman-1.png",
@@ -74,15 +79,25 @@ const int scenes_positions_map[SIZE_MAP][SIZE_MAP] = {
         {5, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 6}
 };
 
+void initGrafo() {
+    for(x_ax = 0; x_ax < SIZE_MAP; x_ax++) {
+        for(y_ax = 0; y_ax < SIZE_MAP; y_ax++) {
+            position = scenes_positions_map[x_ax][y_ax];
+            if(position == 0) {
+                grafo[y_ax][x_ax] = 0;
+            }
+            else {
+                grafo[y_ax][x_ax] = -1;
+            }
+        }
+    }
+}
+
 int generateTexture(char* filename) {
     int texture = SOIL_load_OGL_texture(filename,SOIL_LOAD_AUTO,SOIL_CREATE_NEW_ID,SOIL_FLAG_NTSC_SAFE_RGB);
     if (texture == 0) printf("Erro ao carregar a imagem: %s\n", SOIL_last_result());
     return texture;
 }
-
-int position = 0;
-int x_ax = 0;
-int y_ax = 0;
 
 void initSprites() {
     // Scenes
@@ -149,16 +164,17 @@ void alter_direction(int key, int x, int y) {
 void move_pacman(int value) {
     switch (direction) {
         case 0:
-            x_pacman += 1;
+            if(grafo[x_pacman+1][y_pacman] == 0) x_pacman += 1;
             break;
         case 1:
-            x_pacman -= 1;
+            if(grafo[x_pacman-1][y_pacman] == 0) x_pacman -= 1;
             break;
         case 2:
-            y_pacman -= 1;
+            if(grafo[x_pacman][y_pacman-1] == 0) y_pacman -= 1;
             break;
         case 3:
-            y_pacman += 1;
+            if(grafo[x_pacman][y_pacman+1] == 0) y_pacman += 1;
+            break;
     }
     pac_state = pac_state == 0 ? 1 : 0;
     glutPostRedisplay();
@@ -181,6 +197,7 @@ int main(int argc, char** argv) {
     glutInitWindowSize(600, 600);
     glutCreateWindow("PACMAN");
     gluOrtho2D(0.0, 26.0, 26.0, 0.0);
+    initGrafo();
     initSprites();
     glutDisplayFunc(display);
     glutSpecialFunc(alter_direction);
