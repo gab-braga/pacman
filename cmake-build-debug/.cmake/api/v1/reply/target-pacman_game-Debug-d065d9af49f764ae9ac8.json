@@ -73,7 +73,7 @@
 			[
 				{
 					"backtrace" : 4,
-					"path" : "/Users/macbook/Documents/estudos/c/pacman-game/include"
+					"path" : "/Users/macbook/Documents/estudos/pacman-game/include"
 				},
 				{
 					"backtrace" : 5,
@@ -110,11 +110,11 @@
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-L/Users/macbook/Documents/estudos/c/pacman-game/lib",
+				"fragment" : "-L/Users/macbook/Documents/estudos/pacman-game/lib",
 				"role" : "libraryPath"
 			},
 			{
-				"fragment" : "-Wl,-rpath,/Users/macbook/Documents/estudos/c/pacman-game/lib",
+				"fragment" : "-Wl,-rpath,/Users/macbook/Documents/estudos/pacman-game/lib",
 				"role" : "libraries"
 			},
 			{

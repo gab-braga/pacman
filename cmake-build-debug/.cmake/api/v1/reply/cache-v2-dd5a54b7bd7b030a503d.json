@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/Users/macbook/Documents/estudos/c/pacman-game/cmake-build-debug"
+			"value" : "/Users/macbook/Documents/estudos/pacman-game/cmake-build-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -479,7 +479,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/Users/macbook/Documents/estudos/c/pacman-game/cmake-build-debug/CMakeFiles/pkgRedirects"
+			"value" : "/Users/macbook/Documents/estudos/pacman-game/cmake-build-debug/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -539,7 +539,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/Users/macbook/Documents/estudos/c/pacman-game"
+			"value" : "/Users/macbook/Documents/estudos/pacman-game"
 		},
 		{
 			"name" : "CMAKE_INSTALL_NAME_TOOL",
@@ -1183,7 +1183,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/Users/macbook/Documents/estudos/c/pacman-game/cmake-build-debug"
+			"value" : "/Users/macbook/Documents/estudos/pacman-game/cmake-build-debug"
 		},
 		{
 			"name" : "pacman_game_IS_TOP_LEVEL",
@@ -1207,7 +1207,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/Users/macbook/Documents/estudos/c/pacman-game"
+			"value" : "/Users/macbook/Documents/estudos/pacman-game"
 		}
 	],
 	"kind" : "cache",

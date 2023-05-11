@@ -1,3 +1,3 @@
-/Users/macbook/Documents/estudos/c/pacman-game/cmake-build-debug/CMakeFiles/pacman_game.dir
-/Users/macbook/Documents/estudos/c/pacman-game/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/macbook/Documents/estudos/c/pacman-game/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/macbook/Documents/estudos/pacman-game/cmake-build-debug/CMakeFiles/pacman_game.dir
+/Users/macbook/Documents/estudos/pacman-game/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/macbook/Documents/estudos/pacman-game/cmake-build-debug/CMakeFiles/rebuild_cache.dir

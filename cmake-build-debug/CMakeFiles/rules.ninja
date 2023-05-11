@@ -42,7 +42,7 @@ rule CUSTOM_COMMAND
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-  command = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S/Users/macbook/Documents/estudos/c/pacman-game -B/Users/macbook/Documents/estudos/c/pacman-game/cmake-build-debug
+  command = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S/Users/macbook/Documents/estudos/pacman-game -B/Users/macbook/Documents/estudos/pacman-game/cmake-build-debug
   description = Re-running CMake...
   generator = 1
 

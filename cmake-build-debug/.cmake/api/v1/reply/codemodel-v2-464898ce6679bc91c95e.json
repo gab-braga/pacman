@@ -39,7 +39,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "pacman_game::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-pacman_game-Debug-4f1f687462f4572f0ca2.json",
+					"jsonFile" : "target-pacman_game-Debug-d065d9af49f764ae9ac8.json",
 					"name" : "pacman_game",
 					"projectIndex" : 0
 				}
@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/Users/macbook/Documents/estudos/c/pacman-game/cmake-build-debug",
-		"source" : "/Users/macbook/Documents/estudos/c/pacman-game"
+		"build" : "/Users/macbook/Documents/estudos/pacman-game/cmake-build-debug",
+		"source" : "/Users/macbook/Documents/estudos/pacman-game"
 	},
 	"version" : 
 	{

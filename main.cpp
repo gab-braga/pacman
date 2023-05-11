@@ -7,13 +7,27 @@
 #include <stdlib.h>
 #include <SOIL.h>
 
+const int WINDOW_SIZE = 600;
+
 const int SIZE_MAP = 26;
 const int SIZE_PAC_MODE = 8;
 
+const int D_RIGHT = 0;
+const int D_LEFT  = 1;
+const int D_UP    = 2;
+const int D_DOWN  = 3;
+
+const int PAC_STATE_RIGHT = 0;
+const int PAC_STATE_LEFT  = 2;
+const int PAC_STATE_UP    = 4;
+const int PAC_STATE_DOWN  = 6;
+
+const int MOVE_SIZE = 1;
+
 int pac_state = 0;
-int x_pacman = 13.0;
-int y_pacman = 15.0;
-int direction = 0; // 0 - right / 1 - left / 2 - top / 3 - down
+int x_pacman = 13;
+int y_pacman = 15;
+int direction = D_RIGHT;
 
 GLint map[SIZE_MAP][SIZE_MAP];
 GLint pacman[SIZE_PAC_MODE];
@@ -79,7 +93,7 @@ const int scenes_positions_map[SIZE_MAP][SIZE_MAP] = {
         {5, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 6}
 };
 
-void initGrafo() {
+void init_grafo() {
     for(x_ax = 0; x_ax < SIZE_MAP; x_ax++) {
         for(y_ax = 0; y_ax < SIZE_MAP; y_ax++) {
             position = scenes_positions_map[x_ax][y_ax];
@@ -93,27 +107,27 @@ void initGrafo() {
     }
 }
 
-int generateTexture(char* filename) {
+int generate_texture(char* filename) {
     int texture = SOIL_load_OGL_texture(filename,SOIL_LOAD_AUTO,SOIL_CREATE_NEW_ID,SOIL_FLAG_NTSC_SAFE_RGB);
     if (texture == 0) printf("Erro ao carregar a imagem: %s\n", SOIL_last_result());
     return texture;
 }
 
-void initSprites() {
+void init_sprites() {
     // Scenes
     for(x_ax = 0; x_ax < SIZE_MAP; x_ax++) {
         for(y_ax = 0; y_ax < SIZE_MAP; y_ax++) {
             position = scenes_positions_map[x_ax][y_ax];
-            map[y_ax][x_ax] = generateTexture(const_cast<char *>(scene_paths[position]));
+            map[y_ax][x_ax] = generate_texture(const_cast<char *>(scene_paths[position]));
         }
     }
-    // Pacman
+    // Pac-Man
     for(x_ax = 0; x_ax < SIZE_PAC_MODE; x_ax++)  {
-        pacman[x_ax] = generateTexture(const_cast<char *>(pacman_paths[x_ax]));
+        pacman[x_ax] = generate_texture(const_cast<char *>(pacman_paths[x_ax]));
     }
 }
 
-void drawTexture(GLint texture, float x, float y) {
+void draw_texture(GLint texture, float x, float y) {
     glBindTexture(GL_TEXTURE_2D, texture);
     glBegin(GL_QUADS);
     glTexCoord2f(0.0f, 0.0f);
@@ -130,13 +144,13 @@ void drawTexture(GLint texture, float x, float y) {
 void draw_scenes() {
     for(x_ax = 0; x_ax < SIZE_MAP; x_ax++) {
         for(y_ax = 0; y_ax < SIZE_MAP; y_ax++) {
-            drawTexture(map[x_ax][y_ax], x_ax, y_ax);
+            draw_texture(map[x_ax][y_ax], x_ax, y_ax);
         }
     }
 }
 
 void draw_pacman() {
-    drawTexture(pacman[pac_state], x_pacman, y_pacman);
+    draw_texture(pacman[pac_state], x_pacman, y_pacman);
 }
 
 void display() {
@@ -151,34 +165,56 @@ void display() {
 void alter_direction(int key, int x, int y) {
     switch(key){
         case GLUT_KEY_RIGHT:
-            direction = 0; break;
+            direction = D_RIGHT;
+            pac_state = PAC_STATE_RIGHT;
+            break;
+
         case GLUT_KEY_LEFT:
-            direction = 1; break;
+            direction = D_LEFT;
+            pac_state = PAC_STATE_LEFT;
+            break;
         case GLUT_KEY_UP:
-            direction = 2; break;
+            direction = D_UP;
+            pac_state = PAC_STATE_UP;
+            break;
         case GLUT_KEY_DOWN:
-            direction = 3; break;
+            direction = D_DOWN;
+            pac_state = PAC_STATE_DOWN;
+            break;
     }
 }
 
 void move_pacman(int value) {
     switch (direction) {
-        case 0:
-            if(grafo[x_pacman+1][y_pacman] == 0) x_pacman += 1;
+        case D_RIGHT:
+            if(x_pacman == 25 && y_pacman == 11) {
+                x_pacman = 0;
+            }
+            else {
+                if(grafo[x_pacman+1][y_pacman] == 0) x_pacman += MOVE_SIZE;
+            }
             break;
-        case 1:
-            if(grafo[x_pacman-1][y_pacman] == 0) x_pacman -= 1;
+        case D_LEFT:
+            if(x_pacman == 0 && y_pacman == 11) {
+                x_pacman = 25;
+            }
+            else {
+                if(grafo[x_pacman-1][y_pacman] == 0) x_pacman -= MOVE_SIZE;
+            }
             break;
-        case 2:
-            if(grafo[x_pacman][y_pacman-1] == 0) y_pacman -= 1;
+        case D_UP:
+            if(grafo[x_pacman][y_pacman-1] == 0) y_pacman -= MOVE_SIZE;
             break;
-        case 3:
-            if(grafo[x_pacman][y_pacman+1] == 0) y_pacman += 1;
+        case D_DOWN:
+            if(grafo[x_pacman][y_pacman+1] == 0) y_pacman += MOVE_SIZE;
             break;
     }
-    pac_state = pac_state == 0 ? 1 : 0;
+
+    // Update mode Pac-Man
+    pac_state = (pac_state % 2 == 0) ? pac_state+1 : pac_state-1;
+    // Update view screen
     glutPostRedisplay();
-    glutTimerFunc(150, move_pacman, 1);
+    glutTimerFunc(200, move_pacman, 1);
 }
 
 void init() {
@@ -194,14 +230,14 @@ void init() {
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
-    glutInitWindowSize(600, 600);
+    glutInitWindowSize(WINDOW_SIZE, WINDOW_SIZE);
     glutCreateWindow("PACMAN");
     gluOrtho2D(0.0, 26.0, 26.0, 0.0);
-    initGrafo();
-    initSprites();
+    init_grafo();
+    init_sprites();
     glutDisplayFunc(display);
     glutSpecialFunc(alter_direction);
-    glutTimerFunc(3000, move_pacman, 1);
+    glutTimerFunc(2000, move_pacman, 1);
 //    init();
     glutMainLoop();
     return 0;
