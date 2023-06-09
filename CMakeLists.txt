@@ -11,7 +11,7 @@ find_library(GLUT_LIBRARY GLUT REQUIRED)
 include_directories(include)
 link_directories(${CMAKE_SOURCE_DIR}/lib)
 
-add_executable(pacman_game main.cpp)
+add_executable(pacman_game main.cpp pacman.cpp pacman.h)
 
 target_include_directories(pacman_game PRIVATE ${OPENGL_INCLUDE_DIR})
 target_link_libraries(pacman_game PRIVATE ${OPENGL_LIBRARIES})
