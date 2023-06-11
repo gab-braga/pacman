@@ -5,13 +5,13 @@ typedef struct TScene Scene;
 void initSprites();
 
 Scene* generateScene();
-void drawScene();
+void drawScene(Scene *scene);
 void destroyScene(Scene *scene);
 
 Pacman* createPacman(int x, int y);
 void drawPacman(Pacman *pac);
 void destroyPacman(Pacman *pac);
-void alterDirectionPacman(Pacman *pac, int direction, Scene *scene);
+void alterDirectionPacman(Pacman *pac, int direction);
 void movePacman(Pacman *pac, Scene *scene);
 int checkLifePacman(Pacman* pac);
 
