@@ -18,9 +18,16 @@
 #define LEFT  2
 #define UP   3
 
+#define PH_ORANGE 0
+#define PH_PINK 4
+#define PH_CYAN 8
+#define PH_RED 12
+#define PH_GRAY 16
+
 int mode = STARTING;
 Scene *scene = NULL;
 Pacman *pacman = NULL;
+Phantom *phOrange = NULL;
 
 void display() {
     glClearColor(0.0, 0.0, 0.0, 1.0);
@@ -28,8 +35,9 @@ void display() {
     glEnable(GL_TEXTURE_2D);
     if(scene != NULL) drawScene(scene);
     if(pacman != NULL) drawPacman(pacman);
-    if(mode == 0) drawGameStart();
-    if(mode == 2) drawGameOver();
+    if(phOrange != NULL) drawPhantom(phOrange);
+    if(mode == STARTING) drawGameStart();
+    if(mode == FAILED) drawGameOver();
     glDisable(GL_TEXTURE_2D);
     glutSwapBuffers();
 }
@@ -37,10 +45,18 @@ void display() {
 void playGame() {
     scene = generateScene();
     pacman = createPacman(12, 5);
+    phOrange = createPhantom(11, 14, PH_ORANGE);
+}
+
+void endGame() {
+    drawGameOver();
+//    destroyScene(scene);
+//    destroyPacman(pacman);
+//    destroyPhantom(phOrange);
 }
 
 void keyboard(unsigned char key, int x, int y) {
-    if (mode != PLAYING && (key == 80 || key == 112)) {
+    if ((mode == STARTING || mode == FAILED) && (key == 80 || key == 112)) {
         switch (mode) {
             case STARTING:
                 mode = PLAYING;
@@ -71,12 +87,18 @@ void keyboardSpecial(int key, int x, int y) {
     }
 }
 
-void movePacman(int value) {
-    if(pacman != NULL && scene != NULL) {
-        movePacman(pacman, scene);
+void timer(int value) {
+    if(pacman != NULL && scene != NULL && mode == PLAYING) {
+        if(checkLifePacman(pacman)) {
+            movePacman(pacman, scene);
+            movePhantom(phOrange, scene, pacman);
+        }
+        else {
+            mode = FAILED;
+        }
         glutPostRedisplay();
     }
-    glutTimerFunc(200, movePacman, 1);
+    glutTimerFunc(200, timer, 1);
 }
 
 void init() {
@@ -92,7 +114,7 @@ int main(int argc, char** argv) {
     gluOrtho2D(0.0, 26.0, 26.0, 0.0);
     glutDisplayFunc(display);
     glutKeyboardFunc(keyboard);
-    glutTimerFunc(200, movePacman, 1);
+    glutTimerFunc(200, timer, 1);
     glutSpecialFunc(keyboardSpecial);
     glutMainLoop();
     return 0;

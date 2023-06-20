@@ -22,6 +22,7 @@
 
 #define POWER 0
 #define NO_POWER (-1)
+
 #define LIFE 0
 #define DEAD (-1)
 
@@ -90,30 +91,30 @@ const char* SCENES_PATHS[13] = {
 
 const int SCENES_POSITION[MAP_SIZE][MAP_SIZE] = {
         {7, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 8, 7, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 8},
-        {3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
-        {3, 0, 7, 4, 8, 0, 7, 4, 4, 4, 8, 0, 3, 3, 0, 7, 4, 4, 4, 8, 0, 7, 4, 8, 0, 3},
-        {3, 0, 3, 0, 3, 0, 3, 0, 0, 0, 3, 0, 3, 3, 0, 3, 0, 0, 0, 3, 0, 3, 0, 3, 0, 3},
-        {3, 0, 5, 4, 6, 0, 5, 4, 4, 4, 6, 0, 5, 6, 0, 5, 4, 4, 4, 6, 0, 5, 4, 6, 0, 3},
-        {3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
-        {3, 0, 9, 4, 10, 0, 7, 8, 0, 9, 4, 4, 8, 7, 4, 4, 10, 0, 7, 8, 0, 9, 4, 10, 0, 3},
-        {3, 0, 0, 0, 0,  0, 3, 3, 0, 0, 0, 0, 3, 3, 0, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 3},
-        {5, 4, 4, 4, 8, 0, 3, 5, 4, 4, 8, 0, 3, 3, 0, 7, 4, 4, 6, 3, 0, 7, 4, 4, 4, 6},
-        {0, 0, 0, 0, 3, 0, 3, 7, 4, 4, 6, 0, 5, 6, 0, 5, 4, 4, 8, 3, 0, 3, 0, 0, 0, 0},
-        {4, 4, 4, 4, 6, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0, 5, 4, 4, 4, 4},
-        {0, 0, 0, 0, 0, 0, 5, 6, 0, 9, 10, 0, 0, 0, 0, 9, 10, 0, 5, 6, 0, 0, 0, 0, 0, 0},
-        {4, 4, 4, 4, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 4, 4, 4, 4},
-        {0, 0, 0, 0, 3, 0, 7, 8, 0, 7, 4, 4, 4, 4, 4, 4, 8, 0, 7, 8, 0, 3, 0, 0, 0, 0},
-        {7, 4, 4, 4, 6, 0, 3, 3, 0, 5, 4, 4, 4, 4, 4, 4, 6, 0, 3, 3, 0, 5, 4, 4, 4, 8},
-        {3, 0, 0, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 3},
-        {3, 0, 7, 4, 10, 0, 5, 6, 0, 9, 4, 4, 8, 7, 4, 4, 10, 0, 5, 6, 0, 9, 4, 8, 0, 3},
-        {3, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 3},
-        {3, 0, 5, 4, 4, 8, 0, 7, 4, 4, 8, 0, 3, 3, 0, 7, 4, 4, 8, 0, 7, 4, 4, 6, 0, 3},
-        {3, 0, 0, 0, 0, 3, 0, 5, 4, 4, 6, 0, 5, 6, 0, 5, 4, 4, 6, 0, 3, 0, 0, 0, 0, 3},
-        {5, 4, 4, 8, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 7, 4, 4, 6},
-        {7, 4, 4, 6, 0, 11, 0, 7, 8, 0, 9, 4, 8, 7, 4, 10, 0, 7, 8, 0, 11, 0, 5, 4, 4, 8},
-        {3, 0, 0, 0, 0, 0, 0, 3, 3, 0, 0, 0, 3, 3, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 0, 3},
-        {3, 0, 9, 4, 4, 4, 4, 6, 5, 4, 10, 0, 5, 6, 0, 9, 4, 6, 5, 4, 4, 4, 4, 10, 0, 3},
-        {3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
+        {3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3},
+        {3, 1, 7, 4, 8, 1, 7, 4, 4, 4, 8, 1, 3, 3, 1, 7, 4, 4, 4, 8, 1, 7, 4, 8, 1, 3},
+        {3, 2, 3, 0, 3, 1, 3, 0, 0, 0, 3, 1, 3, 3, 1, 3, 0, 0, 0, 3, 1, 3, 0, 3, 2, 3},
+        {3, 1, 5, 4, 6, 1, 5, 4, 4, 4, 6, 1, 5, 6, 1, 5, 4, 4, 4, 6, 1, 5, 4, 6, 1, 3},
+        {3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3},
+        {3, 1, 9, 4, 10, 1, 7, 8, 1, 9, 4, 4, 8, 7, 4, 4, 10, 1, 7, 8, 1, 9, 4, 10, 1, 3},
+        {3, 1, 1, 1, 1,  1, 3, 3, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 1, 3},
+        {5, 4, 4, 4, 8, 1, 3, 5, 4, 4, 8, 1, 3, 3, 1, 7, 4, 4, 6, 3, 1, 7, 4, 4, 4, 6},
+        {0, 0, 0, 0, 3, 1, 3, 7, 4, 4, 6, 1, 5, 6, 1, 5, 4, 4, 8, 3, 1, 3, 0, 0, 0, 0},
+        {4, 4, 4, 4, 6, 1, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 1, 5, 4, 4, 4, 4},
+        {1, 1, 1, 1, 1, 1, 5, 6, 1, 7, 4, 4, 4, 4, 4, 4, 8, 1, 5, 6, 1, 1, 1, 1, 1, 1},
+        {4, 4, 4, 4, 8, 1, 1, 1, 1, 3, 0, 0, 0, 0, 0, 0, 3, 1, 1, 1, 1, 7, 4, 4, 4, 4},
+        {0, 0, 0, 0, 3, 1, 7, 8, 1, 5, 4, 4, 4, 4, 4, 4, 6, 1, 7, 8, 1, 3, 0, 0, 0, 0},
+        {7, 4, 4, 4, 6, 1, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 1, 5, 4, 4, 4, 8},
+        {3, 1, 1, 1, 1, 1, 3, 3, 1, 7, 4, 4, 4, 4, 4, 4, 8, 1, 3, 3, 1, 1, 1, 1, 1, 3},
+        {3, 1, 7, 4, 10, 1, 5, 6, 1, 5, 4, 4, 8, 7, 4, 4, 6, 1, 5, 6, 1, 9, 4, 8, 1, 3},
+        {3, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 3},
+        {3, 1, 5, 4, 4, 8, 1, 7, 4, 4, 8, 1, 3, 3, 1, 7, 4, 4, 8, 1, 7, 4, 4, 6, 1, 3},
+        {3, 1, 1, 1, 1, 3, 1, 5, 4, 4, 6, 1, 5, 6, 1, 5, 4, 4, 6, 1, 3, 1, 1, 1, 1, 3},
+        {5, 4, 4, 8, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 7, 4, 4, 6},
+        {7, 4, 4, 6, 1, 11, 1, 7, 8, 1, 9, 4, 8, 7, 4, 10, 1, 7, 8, 1, 11, 1, 5, 4, 4, 8},
+        {3, 1, 1, 1, 1, 1, 1, 3, 3, 1, 1, 1, 3, 3, 1, 1, 1, 3, 3, 1, 1, 1, 1, 1, 1, 3},
+        {3, 2, 9, 4, 4, 4, 4, 6, 5, 4, 10, 1, 5, 6, 1, 9, 4, 6, 5, 4, 4, 4, 4, 10, 2, 3},
+        {3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3},
         {5, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 6}
 };
 
@@ -160,7 +161,7 @@ struct TPacman {
 
 // DEFINE A ESTRUTURA DO FANTASMA
 struct TPhantom {
-    int status; // INDICA O MODO DO FANTASMA (0, 1 MORTO, 2)
+    int status; // INDICA O MODO DO FANTASMA (-1 MORTO, 0 CAPTURA, 1 FUGA, 2 PAUSA)
     int xi, yi; // POSIÇÕES INCIAIS
     int x, y; // POSIÇÕES DINÂMICAS
     int direction, step, parcial;
@@ -188,7 +189,7 @@ void collectPointsPhantom(Pacman *pac);
 int generateRandomPhantomDirection(Phantom *ph, Scene *scene);
 int calculateDistanceGrafo(Scene *scene, int nodeA, int nodeB);
 void findMinPath(Phantom *ph, Scene *scene);
-void verifyDirectionPhantom(Phantom *ph, Scene *scene, Pacman *pac);
+void movePhantomByDirection(Phantom *ph, int direction, Scene *scene);
 void deadAnimeationPacman(Pacman *pac);
 void gameOver(Pacman *pac);
 
@@ -229,7 +230,7 @@ Scene* generateScene() {
     for(x = 0; x < MAP_SIZE; x++) {
         for(y = 0; y < MAP_SIZE; y++) {
             position = SCENES_POSITION[y][x];
-            scene->map[x][y] = position == 0 ? 1 : position;
+            scene->map[x][y] = position;
             if(position == 0) // INDICATIVO DE CAMINHO LIVRE
                 scene->coins++;
         }
@@ -274,22 +275,11 @@ Pacman* createPacman(int x, int y) {
     return pac;
 }
 
-// RENDERIZA NA JANELA DE VISUALIZAÇÃO O PACMAN COM BASE NAS SUAS CORDENADAS X, Y E NA PARCIALIDADE DO PASSO
+// RENDERIZA NA JANELA DE VISUALIZAÇÃO O PACMAN COM BASE NAS SUAS CORDENADAS X, Y
 void drawPacman(Pacman *pac) {
     if(pac->life != LIFE)
         return;
-
-    float line, column;
-    float step = pac->parcial / SALT;
-    if(pac->direction == 0 || pac->direction == 2) {
-        line = pac->x + step;
-        column = pac->y;
-    }
-    else {
-        line = pac->x;
-        column = pac->y + step;
-    }
-    drawSprite(pacmanTex2d[pac->status], line, column);
+    drawSprite(pacmanTex2d[pac->status], pac->x, pac->y);
 }
 
 // LIBERAR MEMORIA ALOCADA PARA O PACMAN
@@ -297,62 +287,81 @@ void destroyPacman(Pacman *pac) {
     free(pac);
 }
 
+// ALTERAR DIREÇÃO DO PACMAN BASEADO NO DIREÇÃO RECEBIDA
 void alterDirectionPacman(Pacman *pac, int direction) {
     pac->direction = direction;
+    switch(direction){
+        case RIGHT:
+            pac->status = 0;
+            break;
+        case LEFT:
+            pac->status = 2;
+            break;
+        case UP:
+            pac->status = 4;
+            break;
+        case DOWN:
+            pac->status = 6;
+            break;
+    }
 }
 
+// MOVIMENTA O PACMAN BASEADO NA DIREÇÃO ATUAL COLETA AS MOEDAS
 void movePacman(Pacman *pac, Scene *scene) {
     int position;
     if(pac->life != LIFE)
         return;
-
+    // VERIFICA CAMINHO LIVRE NA DIREÇÃO E MODA POSIÇÃO DO PACMAN
     position = scene->map[pac->x + DIRECTIONS[pac->direction].x][pac->y + DIRECTIONS[pac->direction].y];
     if(position == FREE_WAY || position == COIN_WAY || position == POWER_WAY) {
         pac->x += DIRECTIONS[pac->direction].x;
         pac->y += DIRECTIONS[pac->direction].y;
-        pac->parcial = 0;
     }
-
-    if(scene->map[pac->x][pac->y] == 1) { // INDICATIVO DE COIN
+    // COLETA MOEDA
+    if(scene->map[pac->x][pac->y] == COIN_WAY) { // INDICATIVO DE COIN
         pac->points += 10;
         scene->coins--;
     }
-    else if(scene->map[pac->x][pac->y] == 2) {
+    // COLETA PODER
+    else if(scene->map[pac->x][pac->y] == POWER_WAY) { // INDICATIVO DE POWER
         pac->points += 50;
-        pac->power = 1000;
+        pac->power = POWER;
         scene->coins--;
     }
-    scene->map[pac->x][pac->y] = 0;
-    pac->status = (pac->status % 2 == 0) ? pac->status+1 : pac->status-1;
-
+    // REMOVE MOEADA DO MAPA
+    scene->map[pac->x][pac->y] = FREE_WAY;
+    // ALTERNA STATUS DO PACMAN (BOCA FECHADA/ABERTA)
+    pac->status = (pac->status % 2 == 0) ? pac->status + 1 : pac->status - 1;
+    // LOG DE PONTUAÇÃO
     printf("Pontos -> %d\n", pac->points);
     printf("Moedas -> %d\n", scene->coins);
 }
 
+// CHECAR O STATUS DA VITALIDADE DO PACMAN
 int checkLifePacman(Pacman *pac) {
-    if(pac->life) {
+    if(pac->life == LIFE) {
         return 1;
     }
     else {
-        if(pac->deadAnimation > 60) {
-            return 0;
-        }
-        else {
-            return 1;
-        }
+        return 0;
+//        if(pac->deadAnimation > 60) {
+//            return 0;
+//        }
+//        else {
+//            return 1;
+//        }
     }
 }
 
+// CRIAR UM NOVO FANSTASMA COM INFORMAÇÕES INICIAIS
 Phantom* createPhantom(int x, int y, int id) {
     Phantom *ph = static_cast<Phantom *>(malloc(sizeof(Phantom)));
     if(ph != NULL) {
-        ph->step = 3;
         ph->isCrossing = 0;
         ph->isReturn = 0;
         ph->indexCurrent = 0;
         ph->status = 0;
         ph->direction = 0;
-        ph->parcial = 0;
         ph->path = NULL;
         ph->xi = x;
         ph->yi = y;
@@ -363,20 +372,10 @@ Phantom* createPhantom(int x, int y, int id) {
     return ph;
 }
 
-// RENDERIZA NA JANELA DE VISUALIZAÇÃO O FANTASMA COM BASE NAS SUAS CORDENADAS X, Y E NA PARCIALIDADE DO PASSO
+// RENDERIZA NA JANELA DE VISUALIZAÇÃO O FANTASMA COM BASE NAS SUAS CORDENADAS X, Y
 void drawPhantom(Phantom *ph) {
-    float line, column;
-    float step = ph->parcial / SALT;
-    if(ph->direction == 0 || ph->direction == 2) {
-        line = ph->x;
-        column = ph->y + step;
-    }
-    else {
-        line = ph->x + step;
-        column = ph->y;
-    }
     int idx = ph->id + ph->status;
-    drawSprite(phantomTex2d[idx], line, column);
+    drawSprite(phantomTex2d[idx], ph->x, ph->y);
 }
 
 // LIBERAR MEMORIA ALOCADA PARA O FANTASMA
@@ -386,38 +385,29 @@ void destroyPhantom(Phantom *ph) {
     free(ph);
 }
 
-void movePhantom(Phantom *ph, int direction, Scene *scene) {
-    int xi = ph->x;
-    int yi = ph->y;
-
-    if(xi != ph->x || yi != ph->y)
-        ph->isCrossing = 0;
-
-    if(scene->map[ph->x + DIRECTIONS[direction].x][ph->y + DIRECTIONS[direction].y] == 0) {
-        if(direction == ph->direction) {
-            if(ph->direction < 2) {
-                ph->parcial += ph->step;
-                if(ph->parcial >= SALT) {
-                    ph->x += DIRECTIONS[direction].x;
-                    ph->y += DIRECTIONS[direction].y;
-                    ph->parcial = 0;
-                }
+// COMPUTA A DIREÇÃO E VERIFICA O STATUS DO FANTASMA
+void movePhantom(Phantom *ph, Scene *scene, Pacman *pac) {
+    int direction;
+    if(ph->status == DEAD) {
+        direction = checkDirectionPhantomDead(ph, scene);
+    }
+    else {
+        if(checkPower(pac))
+            ph->status = 1; // INDICATIVO DE MODO DE FUGA
+        else
+            ph->status = 0; // INDICATIVO DE MODO DE CAPTURA
+        direction = checkDirectionPhantomAlive(ph, pac, scene);
+        if(pac->x == ph->x && pac->y == ph->y) {
+//            if(checkPower(pac)) {
+            if(0) {
+                ph->status = DEAD; // INDICATIVO DE MORTE DO FANSTASMA
+                ph->isReturn = 0;
+                collectPointsPhantom(pac);
             }
-            else {
-                ph->parcial -= ph->step;
-                if(ph->parcial <= -SALT) {
-                    ph->x += DIRECTIONS[direction].x;
-                    ph->y += DIRECTIONS[direction].y;
-                    ph->parcial = 0;
-                }
-            }
-        }
-        else {
-            if(abs(direction - ph->direction) != 2)
-                ph->parcial = 0;
-            ph->direction = direction;
+            else if(checkLifePacman(pac)) gameOver(pac);
         }
     }
+    movePhantomByDirection(ph, direction, scene);
 }
 
 // ================================== IMPLEMENTAÇÃO DAS FUNCIONALIDADES UTEIS ==================================
@@ -471,11 +461,13 @@ void drawGameOver() {
 
 // CONSTROI O GRAFO COM BASE NOS CRUZAMENTOS EXISTENTES NO MAPA (CADA CRUZAMENTO OU CURVA É UM VERTICE DO GRAFO)
 void buildSceneGrafo(Scene *scene) {
-    int i, x, y, k, idx, vertexCount = 0;
+    int x, y, k, position, idx, vertexCount = 0;
     int matrizAux[MAP_SIZE][MAP_SIZE];
+    // CONSTROI MAPA AUXILIAR. CRUZAMENTO (POSIÇÃO), RETA (CAMINHO LIVRE), PAREDE (OBSTACULO)
     for(x = 0; x < MAP_SIZE; x++) {
         for(y = 0; y < MAP_SIZE; y++) {
-            if(scene->map[x][y] == FREE_WAY) { // INDICATIVO DE CAMINHO LIVRE
+            position = scene->map[x][y];
+            if(position == FREE_WAY || position == COIN_WAY || position == POWER_WAY) { // INDICATIVO DE CAMINHO LIVRE
                 if(checkCrossing(x, y, scene)) {
                     vertexCount++;
                     matrizAux[x][y] = vertexCount;
@@ -489,39 +481,35 @@ void buildSceneGrafo(Scene *scene) {
             }
         }
     }
-
+    // DEFINE TAMANHO DO GRAFO E ALOCA A MEMORIA
     scene->vertexCount = vertexCount;
     scene->grafo = static_cast<TVertex *>(malloc(vertexCount * sizeof(struct TVertex)));
-
+    // PREECHIMENTO DO GRAFO E POSIÇÕES DAS BORDAS
     for(x = 0; x < MAP_SIZE; x++) {
         for(y = 0; y < MAP_SIZE; y++) {
-            if(matrizAux[x][y] > 0) {
+            if(matrizAux[x][y] > 0) { // INDICATIVO DE CRUZAMENTO
                 idx = matrizAux[x][y] - 1;
                 scene->grafo[idx].x = x;
                 scene->grafo[idx].y = y;
                 for(k = 0; k < 4; k++)
-                    scene->grafo[idx].border[k] = determineDirectionVertex(matrizAux, x, y, k);
+                    scene->grafo[idx].border[k] = determineDirectionVertex(matrizAux, x, y, k); // OBSTACLE, vertexCount
             }
         }
     }
 }
 
-// CHECA A INVECIBILIDADE DO PACMAN
-int checkPower(Pacman *pac) {
-    return pac->power > 0;
-}
-
 // CHECA SE HÁ CRUZAMENTO OU CURVA NA POSSIÇÃO X, Y DETERMINADA
 int checkCrossing(int x, int y, Scene *scene) {
-    int i, vertexCount = 0;
+    int i, position, vertexCount = 0;
     int border[4];
     for(i = 0; i < 4; i++) {
-        if(scene->map[x + DIRECTIONS[i].x][y + DIRECTIONS[i].y] == FREE_WAY) { // INDICATIVO DE OBSTACULO NA DIREÇÃO ESPECIFICADA
-            border[i] = FREE_WAY; // DEFINIR OBSTACULO NA DIREÇÃO ESPECIFICADA
+        position = scene->map[x + DIRECTIONS[i].x][y + DIRECTIONS[i].y];
+        if(position == FREE_WAY || position == COIN_WAY || position == POWER_WAY) { // INDICATIVO DE CAMINHO LIVRE NA DIREÇÃO ESPECIFICADA
+            border[i] = FREE_WAY; // DEFINIR CAMINHO LIVRE NA DIREÇÃO ESPECIFICADA
             vertexCount++; //
         }
         else {
-            border[i] = 0;
+            border[i] = OBSTACLE;
         }
     }
     if(vertexCount > 1) { // INDICATIVO DE CRUZAMENTO
@@ -533,6 +521,33 @@ int checkCrossing(int x, int y, Scene *scene) {
         return 1; // CRUZAMENTO
     }
     return 0; // SEM SAÍDA
+}
+
+// MOVIMENTA O FASNTASMA ALTERANDO OS VALORES DA POSIÇÃO X, Y RELATIVA A ELE
+void movePhantomByDirection(Phantom *ph, int direction, Scene *scene) {
+    int position;
+    int xi = ph->x;
+    int yi = ph->y;
+
+    position = scene->map[ph->x + DIRECTIONS[direction].x][ph->y + DIRECTIONS[direction].y];
+    if(position == FREE_WAY || position == COIN_WAY || position == POWER_WAY) {
+        if(ph->direction == direction) {
+            ph->x += DIRECTIONS[direction].x;
+            ph->y += DIRECTIONS[direction].y;
+            ph->parcial = 0;
+        }
+        else {
+            ph->direction = direction;
+        }
+    }
+
+    if(xi != ph->x || yi != ph->y) // INDICATIVO QUE O FANTASMA NÃO ESTÁ NO CRUZAMENTO
+        ph->isCrossing = 0;
+}
+
+// CHECA A INVECIBILIDADE DO PACMAN
+int checkPower(Pacman *pac) {
+    return pac->power == POWER;
 }
 
 // DETERMINA O VALOR DE CADA DIREÇÃO DE UM VERTICE. OBSTACULO (-1) OU CRUZAMENTO (N-1)
@@ -614,24 +629,24 @@ int checkDirectionPhantomAlive(Phantom *ph, Pacman *pac, Scene *scene) {
             direction = (direction + 2) % 4;
         if(scene->map[ph->x + DIRECTIONS[direction].x][ph->y + DIRECTIONS[direction].y] > 2)
             direction = (direction + 2) % 4;
-
     }
     return direction;
 }
 
 int checkDirectionPhantomDead(Phantom *ph, Scene *scene) {
-    int direction;
+    int direction, position;
     if(!ph->isReturn) {
         if(checkCrossing(ph->x, ph->y, scene)) {
+            ph->isCrossing = 1;
             ph->isReturn = 1;
             findMinPath(ph, scene);
-            ph->isCrossing = 1;
             direction = chekcDirectionGrafo(ph, scene);
         }
         else {
             direction = ph->direction;
-            if(scene->map[ph->x + DIRECTIONS[direction].x][ph->y + DIRECTIONS[direction].y] > 2)
-                direction = (direction + 2) % 4;
+            position = scene->map[ph->x + DIRECTIONS[direction].x][ph->y + DIRECTIONS[direction].y];
+            if(position != FREE_WAY && position != COIN_WAY && position != POWER_WAY) // INDICATIVO DE OBSTACULO
+                direction = (direction + 2) % 4; // RETORNA REFERENTE A DIREÇÃO ATUAL
         }
     }
     else {
@@ -658,6 +673,7 @@ int checkDirectionPhantomDead(Phantom *ph, Scene *scene) {
     return direction;
 }
 
+// PACMAN RECEBE MAIS 100 PONTOS COM A MORTE DO FANTASMA
 void collectPointsPhantom(Pacman *pac) {
     pac->points += 100;
 }
@@ -687,12 +703,8 @@ int generateRandomPhantomDirection(Phantom *ph, Scene *scene) {
     return border[i];
 }
 
-int calculateDistanceGrafo(Scene *scene, int nodeA, int nodeB) {
-    return fabs(scene->grafo[nodeA].x - scene->grafo[nodeB].x) + fabs(scene->grafo[nodeA].y - scene->grafo[nodeB].y);
-}
-
 void findMinPath(Phantom *ph, Scene *scene) {
-    int i, k, indexNode, direction;
+    int i, k, indexNode, steps;
     int flag;
     int *distance = static_cast<int *>(malloc(scene->vertexCount * sizeof(int)));
     if(ph->path == NULL)
@@ -702,7 +714,7 @@ void findMinPath(Phantom *ph, Scene *scene) {
         ph->path[i] = -1;
         if(scene->grafo[i].x == ph->xi && scene->grafo[i].y == ph->yi)
             indexNode = i;
-        if(scene->grafo[i].x == ph->xi && scene->grafo[i].y == ph->yi)
+        if(scene->grafo[i].x == ph->x && scene->grafo[i].y == ph->y)
             ph->indexCurrent = i;
     }
     distance[indexNode] = 0;
@@ -711,10 +723,10 @@ void findMinPath(Phantom *ph, Scene *scene) {
         flag = 0;
         for(i = 0; i < scene->vertexCount; i++) {
             for(k = 0; k < 4; k++) {
-                if(scene->grafo[i].border[k] >= 0) {
-                    direction = calculateDistanceGrafo(scene, i, scene->grafo[i].border[k]);
-                    if(distance[scene->grafo[i].border[k]] > (distance[i] + direction)) {
-                        distance[scene->grafo[i].border[k]] = (distance[i] + direction);
+                if(scene->grafo[i].border[k] >= 0) { // INDICATIVO QUE NÃO É OBSTACULO
+                    steps = calculateDistanceGrafo(scene, i, scene->grafo[i].border[k]);
+                    if(distance[scene->grafo[i].border[k]] > (distance[i] + steps)) {
+                        distance[scene->grafo[i].border[k]] = (distance[i] + steps);
                         ph->path[scene->grafo[i].border[k]] = 1;
                         flag = 1;
                     }
@@ -724,56 +736,38 @@ void findMinPath(Phantom *ph, Scene *scene) {
     }
 }
 
-void verifyDirectionPhantom(Phantom *ph, Scene *scene, Pacman *pac) {
-    int direction;
-    if(ph->status == 1) {
-        direction = checkDirectionPhantomAlive(ph, pac, scene);
-    }
-    else {
-        if(checkPower(pac))
-            ph->status = 2;
-        else
-            ph->status = 0;
-        direction = checkDirectionPhantomDead(ph, scene);
-        if(pac->x == ph->x && pac->y == ph->y) {
-            if(checkPower(pac)) {
-                ph->status = 1;
-                collectPointsPhantom(pac);
-                ph->isReturn = 0;
-            }
-            else
-            if(checkLifePacman(pac))
-                gameOver(pac);
-        }
-    }
-    movePhantom(ph, direction, scene);
+// CALCULA E RETORNA A DISTANCIA ENTRE DOIS PONTOS NO GRAFO (AUXILIA NA ESCOLHA DO CAMINHO QUANDO FANTASMA MORRE)
+int calculateDistanceGrafo(Scene *scene, int nodeA, int nodeB) {
+    return fabs(scene->grafo[nodeA].x - scene->grafo[nodeB].x) + fabs(scene->grafo[nodeA].y - scene->grafo[nodeB].y);
 }
 
-void deadAnimeationPacman(Pacman *pac) {
-    switch(pac->deadAnimation) {
-        case 0:
-            drawSprite(pacmanTex2d[8], pac->x, pac->y);
-            break;
-        case 1:
-            drawSprite(pacmanTex2d[9], pac->x, pac->y);
-            break;
-        case 2:
-            drawSprite(pacmanTex2d[10], pac->x, pac->y);
-            break;
-        case 3:
-            drawSprite(pacmanTex2d[11], pac->x, pac->y);
-            break;
-        case 4:
-            drawGameOver();
-            break;
-    }
-    pac->deadAnimation++;
-}
-
+// PACMAN MORRE A INICIA ANIMAÇÃO DE MORTE
 void gameOver(Pacman *pac) {
-    if(pac->life) {
-        pac->life = 0;
-        pac->deadAnimation = 0;
-        deadAnimeationPacman(pac);
+    if(pac->life == LIFE) {
+        pac->life = DEAD;
+        drawGameOver();
+//        pac->deadAnimation = 0;
+//        deadAnimeationPacman(pac);
     }
 }
+
+//void deadAnimeationPacman(Pacman *pac) {
+//    switch(pac->deadAnimation) {
+//        case 0:
+//            drawSprite(pacmanTex2d[8], pac->x, pac->y);
+//            break;
+//        case 1:
+//            drawSprite(pacmanTex2d[9], pac->x, pac->y);
+//            break;
+//        case 2:
+//            drawSprite(pacmanTex2d[10], pac->x, pac->y);
+//            break;
+//        case 3:
+//            drawSprite(pacmanTex2d[11], pac->x, pac->y);
+//            break;
+//        case 4:
+//            drawGameOver();
+//            break;
+//    }
+//    pac->deadAnimation++;
+//}
