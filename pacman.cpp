@@ -20,11 +20,11 @@
 #define SALT 30
 #define STEP 5
 
-#define POWER 0
-#define NO_POWER (-1)
+#define POWER 100
 
 #define LIFE 0
 #define DEAD (-1)
+#define ESCAPE 1
 
 #define RIGHT 0
 #define DOWN  1
@@ -100,9 +100,9 @@ const int SCENES_POSITION[MAP_SIZE][MAP_SIZE] = {
         {3, 1, 1, 1, 1,  1, 3, 3, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 1, 3},
         {5, 4, 4, 4, 8, 1, 3, 5, 4, 4, 8, 1, 3, 3, 1, 7, 4, 4, 6, 3, 1, 7, 4, 4, 4, 6},
         {0, 0, 0, 0, 3, 1, 3, 7, 4, 4, 6, 1, 5, 6, 1, 5, 4, 4, 8, 3, 1, 3, 0, 0, 0, 0},
-        {4, 4, 4, 4, 6, 1, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 1, 5, 4, 4, 4, 4},
-        {1, 1, 1, 1, 1, 1, 5, 6, 1, 7, 4, 4, 4, 4, 4, 4, 8, 1, 5, 6, 1, 1, 1, 1, 1, 1},
-        {4, 4, 4, 4, 8, 1, 1, 1, 1, 3, 0, 0, 0, 0, 0, 0, 3, 1, 1, 1, 1, 7, 4, 4, 4, 4},
+        {7, 4, 4, 4, 6, 1, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 1, 5, 4, 4, 4, 8},
+        {3, 1, 1, 1, 1, 1, 5, 6, 1, 7, 4, 4, 4, 4, 4, 4, 8, 1, 5, 6, 1, 1, 1, 1, 1, 3},
+        {5, 4, 4, 4, 8, 1, 1, 1, 1, 3, 0, 0, 0, 0, 0, 0, 3, 1, 1, 1, 1, 7, 4, 4, 4, 6},
         {0, 0, 0, 0, 3, 1, 7, 8, 1, 5, 4, 4, 4, 4, 4, 4, 6, 1, 7, 8, 1, 3, 0, 0, 0, 0},
         {7, 4, 4, 4, 6, 1, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 1, 5, 4, 4, 4, 8},
         {3, 1, 1, 1, 1, 1, 3, 3, 1, 7, 4, 4, 4, 4, 4, 4, 8, 1, 3, 3, 1, 1, 1, 1, 1, 3},
@@ -165,6 +165,7 @@ struct TPhantom {
     int xi, yi; // POSIÇÕES INCIAIS
     int x, y; // POSIÇÕES DINÂMICAS
     int direction, step, parcial;
+    int life; // INDICA A VITALIDADE
     int isCrossing; // INDICA DECISÃO DE EFETUAR CRUZAMENTO
     int isReturn; // INDICA DECIÃO DE EFETUAR RETORNO
     int *path; // MAPEAMENTO DO CAMINHO
@@ -181,7 +182,7 @@ void buildSceneGrafo(Scene *scene);
 int determineDirectionVertex(int map[MAP_SIZE][MAP_SIZE], int x, int y, int direction);
 int checkCrossing(int x, int y, Scene *scene);
 int checkPower(Pacman *pac);
-int chekcDirectionGrafo(Phantom *ph, Scene *scene);
+int checkDirectionDeadPhantomInGrafo(Phantom *ph, Scene *scene);
 int checkProximityPacmanPhantom(Phantom *ph, Pacman *pac, Scene *scene, int direction);
 int checkDirectionPhantomAlive(Phantom *ph, Pacman *pac, Scene *scene);
 int checkDirectionPhantomDead(Phantom *ph, Scene *scene);
@@ -231,7 +232,7 @@ Scene* generateScene() {
         for(y = 0; y < MAP_SIZE; y++) {
             position = SCENES_POSITION[y][x];
             scene->map[x][y] = position;
-            if(position == 0) // INDICATIVO DE CAMINHO LIVRE
+            if(position == COIN_WAY || position == POWER_WAY) // INDICATIVO DE CAMINHO LIVRE
                 scene->coins++;
         }
     }
@@ -260,13 +261,11 @@ void destroyScene(Scene *scene) {
 Pacman* createPacman(int x, int y) {
     Pacman *pac = static_cast<Pacman *>(malloc(sizeof(Pacman)));
     if(pac != NULL) {
-        pac->power = NO_POWER;
+        pac->power = 0;
         pac->points = 0;
-        pac->step = STEP;
         pac->life = LIFE;
-        pac->status = 0; //
-        pac->direction = 0;
-        pac->parcial = 0;
+        pac->status = 0;
+        pac->direction = RIGHT;
         pac->xi = x;
         pac->yi = y;
         pac->x = x;
@@ -287,21 +286,21 @@ void destroyPacman(Pacman *pac) {
     free(pac);
 }
 
-// ALTERAR DIREÇÃO DO PACMAN BASEADO NO DIREÇÃO RECEBIDA
+// ALTERAR DIREÇÃO E STATUS DO PACMAN BASEADO NO DIREÇÃO RECEBIDA
 void alterDirectionPacman(Pacman *pac, int direction) {
     pac->direction = direction;
     switch(direction){
         case RIGHT:
-            pac->status = 0;
+            pac->status = 0; // REPRESENTAÇÃO DO PACMAN MOVENDO-SE PARA A DIREITA
             break;
         case LEFT:
-            pac->status = 2;
+            pac->status = 2; // REPRESENTAÇÃO DO PACMAN MOVENDO-SE PARA A ESQUERDA
             break;
         case UP:
-            pac->status = 4;
+            pac->status = 4; // REPRESENTAÇÃO DO PACMAN MOVENDO-SE PARA CIMA
             break;
         case DOWN:
-            pac->status = 6;
+            pac->status = 6; // REPRESENTAÇÃO DO PACMAN MOVENDO-SE PARA BAIXO
             break;
     }
 }
@@ -311,6 +310,9 @@ void movePacman(Pacman *pac, Scene *scene) {
     int position;
     if(pac->life != LIFE)
         return;
+    // VERIFICA E ATUALIZA VALOR DE INVENCIBILIDADE
+    if(pac->power > 0)
+        pac->power -= 2;
     // VERIFICA CAMINHO LIVRE NA DIREÇÃO E MODA POSIÇÃO DO PACMAN
     position = scene->map[pac->x + DIRECTIONS[pac->direction].x][pac->y + DIRECTIONS[pac->direction].y];
     if(position == FREE_WAY || position == COIN_WAY || position == POWER_WAY) {
@@ -333,8 +335,8 @@ void movePacman(Pacman *pac, Scene *scene) {
     // ALTERNA STATUS DO PACMAN (BOCA FECHADA/ABERTA)
     pac->status = (pac->status % 2 == 0) ? pac->status + 1 : pac->status - 1;
     // LOG DE PONTUAÇÃO
-    printf("Pontos -> %d\n", pac->points);
-    printf("Moedas -> %d\n", scene->coins);
+//    printf("Pontos -> %d\n", pac->points);
+//    printf("Moedas -> %d\n", scene->coins);
 }
 
 // CHECAR O STATUS DA VITALIDADE DO PACMAN
@@ -361,7 +363,8 @@ Phantom* createPhantom(int x, int y, int id) {
         ph->isReturn = 0;
         ph->indexCurrent = 0;
         ph->status = 0;
-        ph->direction = 0;
+        ph->direction = RIGHT;
+        ph->life = LIFE;
         ph->path = NULL;
         ph->xi = x;
         ph->yi = y;
@@ -385,23 +388,18 @@ void destroyPhantom(Phantom *ph) {
     free(ph);
 }
 
-// COMPUTA A DIREÇÃO E VERIFICA O STATUS DO FANTASMA
+// COMPUTA A DIREÇÃO E VERIFICA A VITALIDADE DO FANTASMA
 void movePhantom(Phantom *ph, Scene *scene, Pacman *pac) {
     int direction;
-    if(ph->status == DEAD) {
+    if(ph->life == DEAD) {
         direction = checkDirectionPhantomDead(ph, scene);
     }
     else {
-        if(checkPower(pac))
-            ph->status = 1; // INDICATIVO DE MODO DE FUGA
-        else
-            ph->status = 0; // INDICATIVO DE MODO DE CAPTURA
         direction = checkDirectionPhantomAlive(ph, pac, scene);
         if(pac->x == ph->x && pac->y == ph->y) {
-//            if(checkPower(pac)) {
-            if(0) {
-                ph->status = DEAD; // INDICATIVO DE MORTE DO FANSTASMA
-                ph->isReturn = 0;
+            if(checkPower(pac)) {
+                ph->life = DEAD; // INDICATIVO DE MORTE DO FANSTASMA
+                ph->isReturn = 0; // INDICA QUE O FANTASMA DEVE VOLTAR PARA SEU PONTO DE PARTIDA
                 collectPointsPhantom(pac);
             }
             else if(checkLifePacman(pac)) gameOver(pac);
@@ -523,7 +521,7 @@ int checkCrossing(int x, int y, Scene *scene) {
     return 0; // SEM SAÍDA
 }
 
-// MOVIMENTA O FASNTASMA ALTERANDO OS VALORES DA POSIÇÃO X, Y RELATIVA A ELE
+// MOVIMENTA O FANTASMA ALTERANDO OS VALORES DA POSIÇÃO X, Y RELATIVA A ELE
 void movePhantomByDirection(Phantom *ph, int direction, Scene *scene) {
     int position;
     int xi = ph->x;
@@ -531,14 +529,9 @@ void movePhantomByDirection(Phantom *ph, int direction, Scene *scene) {
 
     position = scene->map[ph->x + DIRECTIONS[direction].x][ph->y + DIRECTIONS[direction].y];
     if(position == FREE_WAY || position == COIN_WAY || position == POWER_WAY) {
-        if(ph->direction == direction) {
-            ph->x += DIRECTIONS[direction].x;
-            ph->y += DIRECTIONS[direction].y;
-            ph->parcial = 0;
-        }
-        else {
-            ph->direction = direction;
-        }
+        ph->direction = direction;
+        ph->x += DIRECTIONS[direction].x;
+        ph->y += DIRECTIONS[direction].y;
     }
 
     if(xi != ph->x || yi != ph->y) // INDICATIVO QUE O FANTASMA NÃO ESTÁ NO CRUZAMENTO
@@ -547,7 +540,7 @@ void movePhantomByDirection(Phantom *ph, int direction, Scene *scene) {
 
 // CHECA A INVECIBILIDADE DO PACMAN
 int checkPower(Pacman *pac) {
-    return pac->power == POWER;
+    return (pac->power > 0);
 }
 
 // DETERMINA O VALOR DE CADA DIREÇÃO DE UM VERTICE. OBSTACULO (-1) OU CRUZAMENTO (N-1)
@@ -563,39 +556,40 @@ int determineDirectionVertex(int map[MAP_SIZE][MAP_SIZE], int x, int y, int dire
         return map[xi+DIRECTIONS[direction].x][yi+DIRECTIONS[direction].y] - 1; // INDICATIVO DE SER OUTRO CRUZAMENTO NA DIREÇÃO
 }
 
-int chekcDirectionGrafo(Phantom *ph, Scene *scene) {
+// VERIFICA A DIREÇÃO DO FANTASMA MORTO BASEADO NO INDICE ATUAL
+int checkDirectionDeadPhantomInGrafo(Phantom *ph, Scene *scene) {
     if(scene->grafo[ph->indexCurrent].x == scene->grafo[ph->path[ph->indexCurrent]].x) {
         if(scene->grafo[ph->indexCurrent].y > scene->grafo[ph->path[ph->indexCurrent]].y)
-            return 3;
+            return UP;
         else
-            return 1;
+            return RIGHT;
     }
     else {
         if(scene->grafo[ph->indexCurrent].x > scene->grafo[ph->path[ph->indexCurrent]].x)
-            return 2;
+            return LEFT;
         else
-            return 0;
+            return DOWN;
     }
 }
 
+// VERIFICA SE O PACMAN ESTA NA MESMA LINHA E NA MESMA DIREÇÃO DO FANTASMA
 int checkProximityPacmanPhantom(Phantom *ph, Pacman *pac, Scene *scene, int direction) {
-    int flag = 0;
-    if(direction == 0 || direction == 2) {
-        if(pac->x == ph->x)
+    int position, flag = 0;
+    if(pac->x == ph->x && (direction == RIGHT || direction == LEFT))
             flag = 1;
-    }
-    else {
-        if (pac->y == ph->y)
+    else if (pac->y == ph->y)
             flag = 1;
-    }
     if(flag) {
         int xi = ph->x;
         int yi = ph->y;
-        while(scene->map[yi + DIRECTIONS[direction].y][xi + DIRECTIONS[direction].x] <= 2) {
+        position = scene->map[xi + DIRECTIONS[direction].x][yi + DIRECTIONS[direction].y];
+        while(position == FREE_WAY || position == COIN_WAY || position == POWER_WAY) {
             xi += DIRECTIONS[direction].x;
             yi += DIRECTIONS[direction].y;
-            if(xi == pac->x && yi == pac->y)
+            position = scene->map[xi + DIRECTIONS[direction].x][yi + DIRECTIONS[direction].y];
+            if(xi == pac->x && yi == pac->y) {
                 return 1;
+            }
         }
     }
     return 0;
@@ -640,7 +634,7 @@ int checkDirectionPhantomDead(Phantom *ph, Scene *scene) {
             ph->isCrossing = 1;
             ph->isReturn = 1;
             findMinPath(ph, scene);
-            direction = chekcDirectionGrafo(ph, scene);
+            direction = checkDirectionDeadPhantomInGrafo(ph, scene);
         }
         else {
             direction = ph->direction;
@@ -656,7 +650,7 @@ int checkDirectionPhantomDead(Phantom *ph, Scene *scene) {
                     direction = ph->direction;
                 else {
                     ph->indexCurrent = ph->path[ph->indexCurrent];
-                    direction = chekcDirectionGrafo(ph, scene);
+                    direction = checkDirectionDeadPhantomInGrafo(ph, scene);
                     ph->isCrossing = 1;
                 }
             }
@@ -679,6 +673,7 @@ void collectPointsPhantom(Pacman *pac) {
 }
 
 int generateRandomPhantomDirection(Phantom *ph, Scene *scene) {
+//    printf("Generate Random Direction Phantom");
     int i, j, k, max;
     int weight[4], border[4];
     for(i = 0; i < 4; i++)
