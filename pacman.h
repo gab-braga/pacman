@@ -7,6 +7,7 @@ void initSprites();
 Scene* generateScene();
 void drawScene(Scene *scene);
 void destroyScene(Scene *scene);
+int checkScoreWon(Scene *scene);
 
 Pacman* createPacman(int x, int y);
 void drawPacman(Pacman *pac);
@@ -16,9 +17,10 @@ void movePacman(Pacman *pac, Scene *scene);
 int checkLifePacman(Pacman* pac);
 
 Phantom* createPhantom(int x, int y, int id);
-void drawPhantom(Phantom *ph);
+void drawPhantom(Phantom *ph, Pacman *pac);
 void destroyPhantom(Phantom *ph);
 void movePhantom(Phantom *ph, Scene *scene, Pacman *pac);
 
 void drawGameOver();
 void drawGameStart();
+void drawGameWon();
