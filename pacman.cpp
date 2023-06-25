@@ -373,14 +373,14 @@ int checkLifePacman(Pacman *pac) {
 }
 
 // CRIAR UM NOVO FANSTASMA COM INFORMAÇÕES INICIAIS
-Phantom* createPhantom(int x, int y, int id) {
+Phantom* createPhantom(int x, int y, int id, int direction) {
     Phantom *ph = static_cast<Phantom *>(malloc(sizeof(Phantom)));
     if(ph != NULL) {
         ph->isCrossing = 0;
         ph->isReturn = 0;
         ph->indexCurrent = 0;
         ph->status = 0;
-        ph->direction = RIGHT;
+        ph->direction = direction;
         ph->life = LIFE;
         ph->path = NULL;
         ph->xi = x;
@@ -633,10 +633,10 @@ int checkDirectionDeadPhantomInGrafo(Phantom *ph, Scene *scene) {
 // VERIFICA SE O PACMAN ESTA NA MESMA LINHA E NA MESMA DIREÇÃO DO FANTASMA
 int checkProximityPacmanPhantom(Phantom *ph, Pacman *pac, Scene *scene, int direction) {
     int position, flag = 0;
-    if(pac->x == ph->x && (direction == RIGHT || direction == LEFT))
-            flag = 1;
-    else if (pac->y == ph->y)
-            flag = 1;
+    if(pac->x == ph->x && (direction == UP || direction == DOWN))
+        flag = 1;
+    else if (pac->y == ph->y && (direction == RIGHT || direction == LEFT))
+        flag = 1;
     if(flag) {
         int xi = ph->x;
         int yi = ph->y;
@@ -660,18 +660,19 @@ int checkCollisionPhantomPacman(Phantom *ph, Pacman *pac) {
     return collisionSamePosition || collisionHeadOn;
 }
 
+// GERA UMA NOVA DIREÇÃO PARA O FANTASMA. RANDOMICO OU BASEADA NA PROXIMIDADE DO PACMAN
 int checkDirectionPhantomAlive(Phantom *ph, Pacman *pac, Scene *scene) {
-    int direction, i;
+    int direction, position, i;
     if(checkCrossing(ph->x, ph->y, scene)) {
         if(!ph->isCrossing) {
             direction = -1;
             for(i = 0; i < 4; i++)
-                if(checkProximityPacmanPhantom(ph, pac, scene, direction))
+                if(checkProximityPacmanPhantom(ph, pac, scene, i)) {
                     direction = i;
+                }
             if(direction == -1)
                 direction = generateRandomPhantomDirection(ph, scene);
-            else
-            if(checkPower(pac)) {
+            else if(checkPower(pac)) {
                 i = direction;
                 while(i == direction)
                     direction = generateRandomPhantomDirection(ph, scene);
@@ -686,8 +687,10 @@ int checkDirectionPhantomAlive(Phantom *ph, Pacman *pac, Scene *scene) {
         direction = ph->direction;
         if(checkPower(pac) && checkProximityPacmanPhantom(ph, pac, scene, direction))
             direction = (direction + 2) % 4;
-        if(scene->map[ph->x + DIRECTIONS[direction].x][ph->y + DIRECTIONS[direction].y] > 2)
+        position = scene->map[ph->x + DIRECTIONS[direction].x][ph->y + DIRECTIONS[direction].y];
+        if(position != FREE_WAY && position != COIN_WAY && position != POWER_WAY) {
             direction = (direction + 2) % 4;
+        }
     }
     return direction;
 }

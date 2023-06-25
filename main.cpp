@@ -27,6 +27,9 @@ int mode = STARTING;
 Scene *scene = NULL;
 Pacman *pacman = NULL;
 Phantom *phOrange = NULL;
+Phantom *phPink = NULL;
+Phantom *phCyan = NULL;
+Phantom *phRed = NULL;
 
 void display() {
     glClearColor(0.0, 0.0, 0.0, 1.0);
@@ -35,6 +38,9 @@ void display() {
     if(scene != NULL) drawScene(scene);
     if(pacman != NULL) drawPacman(pacman);
     if(phOrange != NULL) drawPhantom(phOrange, pacman);
+    if(phPink != NULL) drawPhantom(phPink, pacman);
+    if(phCyan != NULL) drawPhantom(phCyan, pacman);
+    if(phRed != NULL) drawPhantom(phRed, pacman);
     if(mode == STARTING) drawGameStart();
     if(mode == FAILED) drawGameOver();
     if(mode == WON) drawGameWon();
@@ -45,11 +51,14 @@ void display() {
 void playGame() {
     scene = generateScene();
     pacman = createPacman(12, 5);
-    phOrange = createPhantom(11, 14, PH_ORANGE);
+    phOrange = createPhantom(11, 10, PH_ORANGE, LEFT);
+//    phPink = createPhantom(14, 10, PH_PINK, RIGHT);
+//    phCyan = createPhantom(11, 14, PH_CYAN, LEFT);
+//    phRed = createPhantom(14, 14, PH_RED, RIGHT);
 }
 
 void keyboard(unsigned char key, int x, int y) {
-    if ((mode == STARTING || mode == FAILED) && (key == 80 || key == 112)) {
+    if ((mode == STARTING || mode == FAILED || mode == WON) && (key == 80 || key == 112)) {
         switch (mode) {
             case STARTING:
                 mode = PLAYING;
@@ -92,6 +101,9 @@ void timer(int value) {
             else {
                 movePacman(pacman, scene);
                 if(phOrange != NULL) movePhantom(phOrange, scene, pacman);
+                if(phPink != NULL) movePhantom(phPink, scene, pacman);
+                if(phCyan != NULL) movePhantom(phCyan, scene, pacman);
+                if(phRed != NULL) movePhantom(phRed, scene, pacman);
             }
         }
         else {
