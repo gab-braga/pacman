@@ -735,9 +735,9 @@ int checkDirectionPhantomDead(Phantom *ph, Scene *scene) {
     return direction;
 }
 
+// GERA UMA DIREÇÃO ALEATÓRIA EM UM CRUZAMENTO DETERMINADO
 int generateRandomPhantomDirection(Phantom *ph, Scene *scene) {
-//    printf("Generate Random Direction Phantom");
-    int i, j, k, max;
+    int i, j, k, max, position;
     int weight[4], border[4];
     for(i = 0; i < 4; i++)
         weight[i] = (rand() % 10 + 1);
@@ -755,9 +755,11 @@ int generateRandomPhantomDirection(Phantom *ph, Scene *scene) {
         weight[k] = 0;
     }
     i = 0;
-    while(scene->map[ph->x + DIRECTIONS[border[i]].x][ph->y + DIRECTIONS[border[i]].y] > 2)
+    position = scene->map[ph->x + DIRECTIONS[border[i]].x][ph->y + DIRECTIONS[border[i]].y];
+    while(position != FREE_WAY && position != COIN_WAY && position != POWER_WAY) {
         i++;
-
+        position = scene->map[ph->x + DIRECTIONS[border[i]].x][ph->y + DIRECTIONS[border[i]].y];
+    }
     return border[i];
 }
 
