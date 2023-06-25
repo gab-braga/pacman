@@ -1,0 +1,9 @@
+# ninja log v5
+470	999	1687648856025545803	pacman_game	9e12b87e63036c03
+4	171	1687648792956308955	CMakeFiles/pacman_game.dir/main.cpp.o	6c5a606f20e0d41a
+0	467	1687648855497870322	CMakeFiles/pacman_game.dir/pacman.cpp.o	eaedb56ecde2ef78
+1	157	1687655610326252268	build.ninja	add451ef0f8e472b
+0	570	1687655610326252268	build.ninja	c09060c1bd8a89ae
+0	1111	1687655611502158285	CMakeFiles/pacman_game.dir/main.cpp.o	6c5a606f20e0d41a
+2	1251	1687655611648559483	CMakeFiles/pacman_game.dir/pacman.cpp.o	eaedb56ecde2ef78
+1253	1980	1687655612371832870	pacman_game	9e12b87e63036c03
