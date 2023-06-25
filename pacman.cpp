@@ -155,6 +155,7 @@ struct TScene {
 struct TPacman {
     int status; // INDICA O MODO DO PACMAN
     int xi, yi; // POSIÇÕES INCIAIS
+    int xl, yl; // POSIÇÕES ANTERIORES
     int x, y; // POSIÇÕES DINÂMICAS
     int direction, step, parcial; // DIREÇÃO, PASSO, PASSO PARCIAL
     int points; // PONTOS COLETADOS
@@ -167,6 +168,7 @@ struct TPacman {
 struct TPhantom {
     int status; // INDICA O MODO DO FANTASMA (-1 MORTO, 0 CAPTURA, 1 FUGA, 2 PAUSA)
     int xi, yi; // POSIÇÕES INCIAIS
+    int xl, yl; // POSIÇÕES ANTERIORES
     int x, y; // POSIÇÕES DINÂMICAS
     int direction, step, parcial;
     int life; // INDICA A VITALIDADE
@@ -188,6 +190,7 @@ int checkCrossing(int x, int y, Scene *scene);
 int checkPower(Pacman *pac);
 int checkDirectionDeadPhantomInGrafo(Phantom *ph, Scene *scene);
 int checkProximityPacmanPhantom(Phantom *ph, Pacman *pac, Scene *scene, int direction);
+int checkCollisionPhantomPacman(Phantom *ph, Pacman *pac);
 int checkDirectionPhantomAlive(Phantom *ph, Pacman *pac, Scene *scene);
 int checkDirectionPhantomDead(Phantom *ph, Scene *scene);
 void collectPointsPhantom(Pacman *pac);
@@ -321,6 +324,9 @@ void movePacman(Pacman *pac, Scene *scene) {
     int position;
     if(pac->life != LIFE)
         return;
+    // ATUALIZAÇÃO DAS ULTIMAS POSIÇÕES DO PACMAN
+    pac->xl = pac->x;
+    pac->yl = pac->y;
     // VERIFICA E ATUALIZA VALOR DE INVENCIBILIDADE
     if(pac->power > 0)
         pac->power -= 2;
@@ -418,7 +424,7 @@ void movePhantom(Phantom *ph, Scene *scene, Pacman *pac) {
     }
     else {
         direction = checkDirectionPhantomAlive(ph, pac, scene);
-        if(pac->x == ph->x && pac->y == ph->y) {
+        if(checkCollisionPhantomPacman(ph, pac)) {
             if(checkPower(pac)) {
                 ph->life = DEAD; // INDICATIVO DE MORTE DO FANSTASMA
                 ph->isReturn = 0; // INDICA QUE O FANTASMA DEVE VOLTAR PARA SEU PONTO DE PARTIDA
@@ -566,7 +572,9 @@ void movePhantomByDirection(Phantom *ph, int direction, Scene *scene) {
     int position;
     int xi = ph->x;
     int yi = ph->y;
-
+    // ATUALIZAÇÃO DAS ULTIMAS POSIÇÕES DO FANTASMA
+    ph->xl = ph->x;
+    ph->yl = ph->y;
     position = scene->map[ph->x + DIRECTIONS[direction].x][ph->y + DIRECTIONS[direction].y];
     if(position == FREE_WAY || position == COIN_WAY || position == POWER_WAY) {
         ph->direction = direction;
@@ -594,6 +602,11 @@ void updateStatusPhantomByDirection(Phantom *ph) {
             ph->status = 3;
             break;
     }
+}
+
+// PACMAN RECEBE MAIS 100 PONTOS COM A MORTE DO FANTASMA
+void collectPointsPhantom(Pacman *pac) {
+    pac->points += 100;
 }
 
 // CHECA A INVECIBILIDADE DO PACMAN
@@ -638,6 +651,13 @@ int checkProximityPacmanPhantom(Phantom *ph, Pacman *pac, Scene *scene, int dire
         }
     }
     return 0;
+}
+
+// VERIFICA SE HOUVE COLISÃO ENTRE FANTASMA E PACMAN
+int checkCollisionPhantomPacman(Phantom *ph, Pacman *pac) {
+    int collisionSamePosition = (ph->x == pac->x && ph->y == pac->y);
+    int collisionHeadOn = (ph->xl == pac->x && ph->yl == pac->y) && (ph->x == pac->xl && ph->y == pac->yl);
+    return collisionSamePosition || collisionHeadOn;
 }
 
 int checkDirectionPhantomAlive(Phantom *ph, Pacman *pac, Scene *scene) {
@@ -710,11 +730,6 @@ int checkDirectionPhantomDead(Phantom *ph, Scene *scene) {
         }
     }
     return direction;
-}
-
-// PACMAN RECEBE MAIS 100 PONTOS COM A MORTE DO FANTASMA
-void collectPointsPhantom(Pacman *pac) {
-    pac->points += 100;
 }
 
 int generateRandomPhantomDirection(Phantom *ph, Scene *scene) {
