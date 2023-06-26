@@ -176,7 +176,7 @@ struct TPhantom {
     int isReturn; // INDICA DECIÃO DE EFETUAR RETORNO
     int *path; // MAPEAMENTO DO CAMINHO
     int indexCurrent; // INDICE ATUAL
-        int id; // IDENTIFICAÇÃO DO FANTASMA
+    int id; // IDENTIFICAÇÃO DO FANTASMA
 };
 
 // ================================== FUNCIONALIDADES UTEIS ==================================
@@ -396,6 +396,7 @@ Phantom* createPhantom(int x, int y, int id, int direction) {
 void drawPhantom(Phantom *ph, Pacman *pac) {
     int idx;
     if(ph->life == DEAD) {
+        return;
         idx = 16 + ph->status; // INDICA POSIÇÃO NO VETOR DA TEXTURA DE UM FANTASMA MORTO
         drawSprite(phantomTex2d[idx], ph->x, ph->y);
     }
@@ -420,6 +421,7 @@ void destroyPhantom(Phantom *ph) {
 void movePhantom(Phantom *ph, Scene *scene, Pacman *pac) {
     int direction;
     if(ph->life == DEAD) {
+        return;
         direction = checkDirectionPhantomDead(ph, scene);
     }
     else {
@@ -427,7 +429,7 @@ void movePhantom(Phantom *ph, Scene *scene, Pacman *pac) {
         if(checkCollisionPhantomPacman(ph, pac)) {
             if(checkPower(pac)) {
                 ph->life = DEAD; // INDICATIVO DE MORTE DO FANSTASMA
-                ph->isReturn = 0; // INDICA QUE O FANTASMA DEVE VOLTAR PARA SEU PONTO DE PARTIDA
+                ph->isReturn = 0; // INDICA QUE O FANTASMA AINDA NÃO INICIOU VOLTAR PARA SEU PONTO DE PARTIDA
                 collectPointsPhantom(pac);
             }
             else if(checkLifePacman(pac)) gameOver(pac);
@@ -728,7 +730,7 @@ int checkDirectionPhantomDead(Phantom *ph, Scene *scene) {
             }
         }
         else {
-            ph->status = 0;
+            ph->life = LIFE;
             direction = ph->direction;
         }
     }

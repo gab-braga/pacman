@@ -52,9 +52,9 @@ void playGame() {
     scene = generateScene();
     pacman = createPacman(12, 5);
     phOrange = createPhantom(11, 10, PH_ORANGE, LEFT);
-//    phPink = createPhantom(14, 10, PH_PINK, RIGHT);
-//    phCyan = createPhantom(11, 14, PH_CYAN, LEFT);
-//    phRed = createPhantom(14, 14, PH_RED, RIGHT);
+    phPink = createPhantom(14, 10, PH_PINK, RIGHT);
+    phCyan = createPhantom(11, 14, PH_CYAN, LEFT);
+    phRed = createPhantom(14, 14, PH_RED, RIGHT);
 }
 
 void keyboard(unsigned char key, int x, int y) {
