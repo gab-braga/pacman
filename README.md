@@ -1,8 +1,9 @@
 # Pac-Man
-Este projeto é uma replicação do famoso jogo Pac-Man utilizando a linguagem C e as bibliotecas OpenGL, Freeglut e SOIL. O jogo foi desenvolvido utilizando o ambiente de desenvolvimento CLion.
+Este projeto é uma replicação do famoso jogo Pac-Man utilizando a linguagem C e as bibliotecas OpenGL,
+Freeglut e SOIL. O jogo foi desenvolvido utilizando o ambiente de desenvolvimento CLion.
 
 ## Tecnologias utilizadas
-* C++: linguagem de programação utilizada para desenvolver a lógica do jogo
+* C/C++: linguagem de programação utilizada para desenvolver a lógica do jogo
 * OpenGL: biblioteca gráfica utilizada para renderizar as imagens do jogo na tela
 * Freeglut: biblioteca utilizada para criar janelas e receber eventos de input do usuário
 * SOIL: biblioteca utilizada para carregar imagens em formato PNG utilizadas como texturas do jogo
@@ -20,5 +21,4 @@ Para executar o jogo, siga os seguintes passos:
 5. Divirta-se jogando Pac-Man!
 
 ## Controles do jogo
-* Setas direcionais do teclado (→, ←, ↑, ↓): movem o personagem Pac-Man pela tela
-* Tecla "ESC": encerra o jogo
+* Setas direcionais do teclado (→, ←, ↑, ↓): movem o personagem Pac-Man pela tela.
