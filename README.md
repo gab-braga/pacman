@@ -9,12 +9,12 @@ Freeglut e SOIL. O jogo foi desenvolvido utilizando o ambiente de desenvolviment
 * SOIL: biblioteca utilizada para carregar imagens em formato PNG utilizadas como texturas do jogo
 
 ## Visualização
-![Pac-Man](https://github.com/F-Gabriel-Braga/pacman/blob/master/pacman.gif)
+![Pac-Man](https://github.com/gab-braga/pacman/blob/master/pacman.gif)
 
 ## Como executar
 Para executar o jogo, siga os seguintes passos:
 
-1. Clone este repositório em sua máquina: `git clone https://github.com/F-Gabriel-Braga/pacman.git`
+1. Clone este repositório em sua máquina: `git clone https://github.com/gab-braga/pacman.git`
 2. Abra o projeto no CLion
 3. Compile o código-fonte do jogo utilizando o CLion
 4. Execute o jogo a partir do CLion ou através do executável gerado pela compilação
